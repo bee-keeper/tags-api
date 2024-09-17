@@ -1,0 +1,9 @@
+# .air.toml
+[build]
+bin = "main"
+cmd = "go build -o main main.go"
+include = ["."]
+exclude = ["vendor", "tmp"]
+
+[log]
+time = true

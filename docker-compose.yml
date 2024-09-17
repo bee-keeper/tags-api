@@ -1,0 +1,35 @@
+services:
+  golang:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tags-api
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tags-api-db
+    working_dir: /go/src/app
+    volumes:
+      - ./:/go/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tags-api-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./test_utils/test.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pgdata:
